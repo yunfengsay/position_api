@@ -4,10 +4,11 @@ import (
 	"./db"
 	_ "./models"
 	"fmt"
+	"github.com/gin-gonic/gin" // 只有这样才能运行其他包里的方法 这个问题看 https://github.com/gin-contrib/cors/issues/21
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"gopkg.in/gin-gonic/gin.v1"
 	"log"
+	//"net/http"
 	"position_api/apis"
 	"position_api/models"
 )
@@ -35,10 +36,10 @@ func initRouter() *gin.Engine {
 	router := gin.Default()
 
 	router.GET("/", apis.IndexApi)
+	router.POST("/wxlogin", apis.WXLogin)
 	//
-	//router.POST("/person", AddPersonApi)
-	//
-	//router.GET("/persons", GetPersonsApi)
+	//router.GET("/persons", GetPersonsApi
+	// )
 	//
 	//router.GET("/person/:id", GetPersonApi)
 	//
@@ -50,6 +51,7 @@ func initRouter() *gin.Engine {
 }
 
 func main() {
+	gin.SetMode(gin.ReleaseMode)
 	db := getDBConnection()
 
 	defer db.Close()

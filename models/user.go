@@ -31,7 +31,10 @@ func init() {
 }
 func WXLogin(OpenId string) (user *User, err error) {
 	user = &User{}
+
 	db := db.Conn.Where("open_id = ?", OpenId).First(user).Scan(user)
+	fmt.Println("error happend**************")
+
 	err = db.Error
 	if err != nil {
 		return nil, err
