@@ -29,13 +29,15 @@ func init() {
 	// db.RegisterMigration(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`)
 	//db.Conn.AutoMigrate(&User{})
 }
+
 func WXLogin(OpenId string) (user *User, err error) {
 	user = &User{}
+	//e := db.Conn.Where("open_id = ?", OpenId).First(&user)
+	rows := db.Conn.Exec("SELECT id FROM user")
 
-	db := db.Conn.Where("open_id = ?", OpenId).First(user).Scan(user)
-	fmt.Println("error happend**************")
+	fmt.Println(rows)
 
-	err = db.Error
+	//err = db.Error
 	if err != nil {
 		return nil, err
 	}

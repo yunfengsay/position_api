@@ -9,12 +9,15 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"log"
 	//"net/http"
+	//"context"
 	"position_api/apis"
 	"position_api/models"
+	//"time"
 )
 
 func getDBConnection() *gorm.DB {
 	db, err := db.Connect("localhost", "position", "yunfeng_db", "pssword")
+	db.SingularTable(true)
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Location{})
 	db.AutoMigrate(&models.Comment{})
@@ -24,7 +27,6 @@ func getDBConnection() *gorm.DB {
 	if err != nil {
 		log.Fatal(err)
 	}
-	db.SingularTable(true)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -37,6 +39,7 @@ func initRouter() *gin.Engine {
 
 	router.GET("/", apis.IndexApi)
 	router.POST("/wxlogin", apis.WXLogin)
+	//router.GET("/addlike", apis.AddLike)
 	//
 	//router.GET("/persons", GetPersonsApi
 	// )
@@ -53,9 +56,9 @@ func initRouter() *gin.Engine {
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	db := getDBConnection()
-
+	fmt.Println("ok")
+	//db.Create(&like)
 	defer db.Close()
 	router := initRouter()
 	router.Run(":8001")
-
 }
